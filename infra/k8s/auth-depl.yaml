@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec: # Behavior
+  replicas: 1 # Number of pods we want to have running one particular image
+  selector: # Take a look at the pods...
+    matchLabels: # whose labels are:
+      app: auth
+  template: # Configuration of the pod we are going to create
+    metadata:
+      labels:
+        app: auth # The selector above is matching up with this label
+    spec: # Tells the pod how to behave
+      containers:
+        - name: auth # Name only for logging purposes
+          image: mcarballido/ticketing-auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth # Find all pods with a label "app: auth" to expose them to the outside
+  ports:
+    - name: auth # Name only for logging purposes
+      protocol: TCP
+      port: 3000 # Port our Node Port Service will listen to
+      targetPort: 3000 # Port our application is listening on / The port of the container

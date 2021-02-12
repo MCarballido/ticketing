@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false # Avoid default behavior of automatically pushing updates to Docker Hub
+  artifacts:
+    - image: mcarballido/ticketing-auth
+      context: auth # Folder that contains all the code for this image
+      docker:
+        dockerfile: Dockerfile
+      sync: # Configure what happens when files change
+        manual:
+          - src: 'src/**/*.ts' # Files that I want Skaffold to watch
+            dest: . # Where to sync this file to inside the container

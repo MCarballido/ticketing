@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: ticketing.dev # Made up domain for my local machine
+      http:
+        paths:
+          - path: /api/users/?(.*) # When requests come to this url redirect them to...
+            backend:
+              serviceName: auth-srv
+              servicePort: 3000
