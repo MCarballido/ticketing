@@ -15,6 +15,12 @@ spec: # Behavior
       containers:
         - name: auth # Name only for logging purposes
           image: mcarballido/ticketing-auth
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service

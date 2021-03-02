@@ -16,3 +16,11 @@ build:
         manual:
           - src: 'src/**/*.ts' # Files that I want Skaffold to watch
             dest: . # Where to sync this file to inside the container
+    - image: mcarballido/ticketing-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: .
